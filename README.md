@@ -14,7 +14,7 @@ Education
 :   **BSc, Mathematics**; University of California, Los Angeles
 
     *Specialization in Computing*
-    *GPA: 3.73, Cum Laude, Phi Beta Kappa*
+    <br>*GPA: 3.73, Cum Laude, Phi Beta Kappa*
 
 Experience
 ----------
@@ -35,4 +35,4 @@ Support customers in the live production use of the Alliant software; work direc
 Technical Experience
 --------------------
 Languages: Conversational Spanish (B2).
-Programming Languages: SQL, R, Python, Numpy, Pandas, Pyomo, Matplotlib, Scipy, Scikit-Learn, Pyspark
+<br>Programming Languages: SQL, R, Python, Numpy, Pandas, Pyomo, Matplotlib, Scipy, Scikit-Learn, Pyspark
