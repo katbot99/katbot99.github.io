@@ -36,7 +36,7 @@ July 2011 – January 2014
 Support customers in the live production use of the Alliant software; work directly with the users on any reported software issues, queries, database upgrades, and provide training for new customers or for new software features. Coordinate between various internal departments to troubleshoot front-end application issues as well as back-end database and software configuration issues.
 
 
-Technical Experience
+Skills
 --------------------
 Languages: Conversational Spanish (B2).
 <br>Programming Languages: SQL, R, Python, Numpy, Pandas, Pyomo, Matplotlib, Scipy, Scikit-Learn, Pyspark
