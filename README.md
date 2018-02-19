@@ -1,3 +1,7 @@
-## Hello World
+### Data Science Portfolio
 
-My name is katbot99 and this is a training!
+## Katherine Botz
+Big Data Analytics MSc Student
+Universidad Carlos III de Madrid
+
+WIP
