@@ -1,6 +1,7 @@
-## Katherine Botz
+# Katherine Botz
 
-### Data Science Portfolio
+Data Science Portfolio
+----------
 WIP
 
 Education
