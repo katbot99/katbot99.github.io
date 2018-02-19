@@ -19,15 +19,17 @@ Education
 Experience
 ----------
 
-**Program Manager of Transition Consulting**
-*REAL Software Systems, London, United Kingdom*
-*January 2014 – August 2017*
+January 2014 – August 2017
+:   **Program Manager of Transition Consulting**
+:   *REAL Software Systems, London, United Kingdom*
+
 
 Manage the Transition program for each Alliant software configuration project from initial go-live phase to stable production use. The Alliant software platform provides enterprise solutions in Intellectual Property management, including contract management and royalties accounting processing. Establish stabilization timeline, troubleshoot post go-live configuration issues, formulate business requirements for software updates, and coordinate between the client and internal development resources. Transition each software implementation from unstable post go-live phase to production use, and prepare each client for interaction with Customer Support Department.
 
-**Customer Consultant**
-*REAL Software Systems, Los Angeles, CA, USA*
-*July 2011 – January 2014*
+July 2011 – January 2014
+:   **Customer Consultant**
+:   *REAL Software Systems, Los Angeles, CA, USA*
+
 
 Support customers in the live production use of the Alliant software; work directly with the users on any reported software issues, queries, database upgrades, and provide training for new customers or for new software features. Coordinate between various internal departments to troubleshoot front-end application issues as well as back-end database and software configuration issues.
 
