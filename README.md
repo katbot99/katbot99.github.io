@@ -38,5 +38,7 @@ Support customers in the live production use of the Alliant software; work direc
 
 Skills
 --------------------
-Languages: Conversational Spanish (B2).
-<br>Programming Languages: SQL, R, Python, Numpy, Pandas, Pyomo, Matplotlib, Scipy, Scikit-Learn, Pyspark
+
+Programming Experience: SQL, R, Python, Numpy, Pandas, Pyomo, Matplotlib, Scipy, Scikit-Learn, Pyspark.
+<br>Software Experience: Microsoft SQL Server, Microsoft Office, JIRA, Rally, Git, Github, Anaconda, OpenRefine.
+<br>Languages: Conversational Spanish (B1).
