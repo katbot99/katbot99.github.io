@@ -2,7 +2,25 @@
 
 Data Science Portfolio
 ----------
-WIP
+### Madrid City Location Intelligence
+# UC3M MSc Thesis Project, in Progress
+Use Geolocalized Twitter data and FourSquare data from Madrid, Spain to build a model to improve on the Huff Model or "Gravity Model" to identify attractiveness and catchment areas in city centers.
+
+### Using Linear Regression to Predict House Prices in Washington
+[Report](https://github.com/katbot99/katbot99.github.io/blob/master/Reports/Housing.pdf)
+Explore Linear Regression Models in R to predict Housing Prices in King County, Washigton, using the [Kaggle](https://www.kaggle.com/harlfoxem/housesalesprediction) dataset.
+
+### Using Logistic Regression to Predict Bank Telemarketing Campaign Success
+[Report](https://github.com/katbot99/katbot99.github.io/blob/master/Reports/Telemarketing.pdf)
+Explore Linear Regression Models in R to predict the success of a Bank Telemarketing Campaign, using the [Kaggle](https://www.kaggle.com/gobert/bank-telemarketing-moro-et-al) dataset.
+
+### Bayesian Linear Regression Modeling to Predict GDP
+[Report](https://github.com/katbot99/katbot99.github.io/blob/master/Reports/GDP.pdf)
+Explore Bayesian Linear Regression Models in R to predict the GDP of Countries, using the [Reddit](https://www.reddit.com/r/datasets/comments/6o053s/i_made_a_csv_file_containing_the_following_data/) [dataset](http://www.sharecsv.com/s/4165c9b03d9fffdef43a3226613ff37c/Countries.csv).
+
+### Identify Luxury Hotel Groupings with Bayesian Clustering
+[Report](https://github.com/katbot99/katbot99.github.io/blob/master/Reports/Hotels.pdf)
+Use Unsupervised Bayesian Clustering methods to identify any natural grouping of luxury hotels in Europe, using the [Kaggle](https://www.kaggle.com/jiashenliu/515k-hotel-reviews-data-in-europe) dataset scraped from reviews on Booking.com.
 
 Education
 ----------
@@ -39,6 +57,6 @@ Support customers in the live production use of the Alliant software; work direc
 Skills
 --------------------
 
-Programming Experience: SQL, R, Python, Numpy, Pandas, Pyomo, Matplotlib, Scipy, Scikit-Learn, Pyspark.
-<br>Software Experience: Microsoft SQL Server, Microsoft Office, JIRA, Rally, Git, Github, Anaconda, OpenRefine.
+Programming Experience: SQL, PostGIS, R, Python, Numpy, Pandas, Pyomo, Matplotlib, Scipy, Scikit-Learn, Pyspark.
+<br>Software Experience: Microsoft SQL Server, PostgreSQL, Microsoft Office, JIRA, Rally, Git, Github, Anaconda, OpenRefine.
 <br>Languages: Conversational Spanish (B1).
