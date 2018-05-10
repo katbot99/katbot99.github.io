@@ -3,7 +3,7 @@
 Data Science Portfolio
 ----------
 ### Madrid City Location Intelligence
-# UC3M MSc Thesis Project, in Progress
+#### UC3M MSc Thesis Project, in Progress
 Use Geolocalized Twitter data and FourSquare data from Madrid, Spain to build a model to improve on the Huff Model or "Gravity Model" to identify attractiveness and catchment areas in city centers.
 
 ### Using Linear Regression to Predict House Prices in Washington
