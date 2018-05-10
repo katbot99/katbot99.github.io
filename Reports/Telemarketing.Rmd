@@ -1,0 +1,242 @@
+---
+title: "Using Logistic Regression to Predict Bank Telemarketing Campaign Success"
+author: "Katherine Botz, Jessica Páez Bonilla, Manuel Jordán Expósito"
+output: 
+  pdf_document: 
+    latex_engine: xelatex
+fontsize: 11pt
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Abstract
+The aim of this Predictive Modeling Project is to find an accurate model for predicting the success or failure of a bank telemarketing campaign. We build several logistic regression models to predict the binary Success response variable and select the best fitting model. We split the dataset into Train and Test data, then train each model using the former and calculate the model accuracy using the latter. We first train a logistic model using the significant variables found by fitting a 10-fold Cross-Validation Lasso model, then perform a stepwise model selection by minimizing the Akaike Information Criterion. In this way, we compare the variable selection methods of the Lasso model compared to the stepwise AIC model selection. We select the best model in the end by balancing the $R^2$, AIC, multicollinearity, and calculated accuracy of the Success prediction in the Test data. Our final model consists of 6 predictor variables and has 92.13% accuracy for prediction.
+
+##Introduction
+We use an open source dataset with 4119 instances and 21 variables describing a bank telemarketing campaign. The dataset includes descriptive information about the clients themselves (including age, marital status, job type, any loans, and education), as well as information about the previous campaign, current campaign, and statistics related to the social and economic context at the time of the campaign. The response is a binary variable that describes the success or failure of the campaign. The goal is to build a logistic regression model to predict the success of future telemarketing campaigns, and determine which variables are significant in this prediction.
+
+##Methods
+In our last project we found a Linear Regression Model to predict a continuous response variable. Since this dataset presents a binary classification problem, we will have to generalize the method of finding a Linear Model where the response is the continuous *probability* of being either one of the classes.
+
+In other words, when in the linear model we fit the coefficients $\beta_0,\ldots,\beta_p$ for continuous response $Y$ and predictors $X_1,\ldots,X_p$ such that:
+
+$${E}[Y|X_1=x_1,\ldots,X_p=x_p]=\beta_0+\beta_1x_1+\ldots+\beta_px_p$$
+
+then for this case we will need to assume $Y$ is a Bernoulli variable and calculate the conditional expectation as follows:
+
+$${E}[Y|X_1=x_1,\ldots,X_p=x_p]={P}[Y=1|X_1=x_1,\ldots,X_p=x_p]$$  
+
+where ${P}[Y=y]=p^y(1-p)^{1-y}$, for $y=0,1$.
+
+However, this conditional expectation $\eta$ can be any range of values, so we need to map it to the 0 to 1 range that we'd expect for probabilities. For a binary response as in our case, we can take the logistic($\eta$):
+
+$${E}[Y|X_1=x_1,\ldots,X_p=x_p]={logistic}(\eta)=\frac{1}{1+e^{\eta}}$$
+
+where $\eta = \beta_0+\beta_1x_1+\ldots+\beta_px_p$.
+
+Now we can interpret the response as a probability between 0 and 1, and assign the binary response as follows:
+
+- If $\eta \geq 0$, then ${P}[Y=1|X_1=x_1,\ldots,X_p=x_p] \geq 0.5$, and classify $Y=1$
+- If $\eta < 0$, then ${P}[Y=1|X_1=x_1,\ldots,X_p=x_p] < 0.5$, and classify $Y=0$
+
+
+Therefore we use logistic regression and the `glm` function in R to find a generalized linear model for predicting the success of bank telemarketing campaigns in our dataset.
+
+Least Absolute Shrinkage and Selection Operator (LASSO) is a regression method that involves penalizing the absolute size of the regression coefficients, whereby in penalization, some of the parameter estimates may be exactly zero. The larger the penalty applied means that this coefficient is not "important," and this importance is measured by the penalization. This particular type of regression is well-suited for models showing high levels of multicollinearity too. Lasso regression performs L1 regularization, which adds a penalty equal to the absolute value of the magnitude of coefficients, on the other hand, we can also find L2 regularization, or Ridge regression.
+
+We will use the significant variables selected from the Lasso function to compare to another model generated using the `stepAIC` function (just as in the linear case) that performs a stepwise model selection with different combinations of variables. This function analyzes each stepwise model for the best fit by finding the one with the smallest Akaike Information Criterion. The AIC is a number that estimates the model fitness compared to its complexity. Therefore the `stepAIC` function gives us a set of variables with the most influence on the response variable while minimizing the multivariate noise.
+
+We will use the Deviance of our logistic regression models as one measure of the fitness of the model. The Deviance measures the difference between the example model and the saturated model, or the one that fits every instance with 100% accuracy. As an analogy to the Linear Model case, we can calculate the R2 from the Deviance:
+
+$$R^2=1-\frac{D}{D_0}\sim 1-\frac{{SSE}}{{SST}}$$
+
+where SSE is the Residual Sum of Squares, SST is the Total Sum of Squares, and $D_0$ is the Null Deviance; a model where each instance is fit exactly *incorrectly*.
+
+However, this is only an analogy to the linear case, as this $R^2$ measures the fit of the model. We will use the following function to calculate the $R^2$ to use during the model evaluation, with caution since the $R^2$ increases with more predictors in the model. Therefore we will need a few more statistics to determine the best model.
+
+```{r}
+r2glm <- function(model) {
+  summaryLog <- summary(model)
+  1 - summaryLog$deviance / summaryLog$null.deviance
+}
+```
+
+We use multicollinearity as another statistic for model selection. Even though the response is a logistic expression, the predictors still comprise a linear interaction. Therefore there is a chance that the variables in our model are linearly dependent, and we will try to minimize any dependence in our final selection. We run the `vif` function in R to diagnose multicollinearity and try to find a model where the `vif` is smaller than 5 for all variables.
+
+The goal of fitting our model is to make accurate predictions of the response variable, so we select three final models and use the Test data to predict the campaign success and then compare to the actual values to calculate the model accuracy. In this way, based on accuracy, best fit, and low multicollinearity we are able to select the best model.
+
+
+##Statistical Analysis
+
+To start, we manipulate the dataset to eliminate missing values and update the response variable with 1 for "Yes," or a successful campaign, and 0 for "No," or an unsuccessful one. We also train the model with 80% of the data and reserve 20% to compare the predicted values to the actual values with our final selected model.
+
+```{r include = FALSE}
+library(rmarkdown)
+library(MASS)
+library(car)
+library(ggplot2)
+library(glmnet)
+library(readr)
+
+bank.raw <- read_csv("bank-additional.csv")
+attach(bank.raw)
+
+bank.raw$pdays[pdays==999] <- NA
+bank.raw$pdays[previous==0] <- 999 #replacing the 999 for the clients without previous campaign
+summary(bank.raw[bank.raw[,"previous"]!=0,])
+bank <- na.omit(bank.raw)
+attach(bank)
+
+bank$y<-gsub("yes","1",bank$y)
+bank$y<-gsub("no","0",bank$y)
+bank$y<-as.numeric(bank$y)
+
+n.bank <- nrow(bank)
+p.bank <- ncol(bank)
+
+x <- model.matrix(y ~ ., data = bank)[, -1]
+y <- bank$y
+
+set.seed(66)
+sample_size <- floor(0.80 * nrow(bank))
+train_ind <- sample(seq_len(nrow(bank)), size = sample_size)
+
+train <- bank[train_ind, ]
+test <- bank[-train_ind, ]
+
+train.x <- train[,-p.bank]
+train.y <- train$y
+test.x <- test[,-p.bank]
+test.y <- test$y
+
+```
+
+In order to minimize the set of predictors, we generate a Lasso model using 10-fold Cross Validation on the entire dataset and identify the significant variables.
+
+```{r}
+lassoMod <- cv.glmnet(x = x, y = y, alpha = 1, nfolds = 10, family = "binomial")
+```
+
+But first, let's analyze the percentage of deviance explained and the selection of lambda in the standard Lasso model. One criterion for selecting the optimal value of lambda with a penalized regression is to examine a plot of the deviance against the range of lambda and select lambda when deviance is minimized. 
+
+Deviance measures how close the model comes to perfection. It is a measure of goodness of fit, where the smaller the deviance, the better. As previously mentioned,  we will later calculate the $R^2$ from the deviance in the logistic regression model, as an analogy to the linear model.
+
+The optimal lambda is found via cross-validation and the resulting models can be compared with various measures. With the next plot we can conclude which lambda has the lowest deviance.
+
+```{r warning=FALSE, fig.height = 3.5, fig.align='center'}
+plot(lassoMod, label = TRUE, xvar = "lambda")
+
+```
+
+In the plots below we can visualize the coefficients vs. log of lambda and the coefficients vs. the fraction of deviance explained. In the first one we can see how many attributes we have with each value of lambda. In the second one we can see that we can explain 30% of the deviance with just 3 attributes.
+
+```{r warning=FALSE, fig.height = 3.5, fig.width = 4, fig.align='center'}
+lassoMod1 <- glmnet(x = x, y = y, alpha = 1) 
+plot(lassoMod1, label = TRUE, xvar = "lambda")
+plot(lassoMod1, label = TRUE, xvar = "dev")
+```
+
+
+We then look at the sparse coefficient matrix to determine which variables are significant. The nonsignificant variables are penalized with zero coefficients, so we are interested in the nonzero coefficients.
+
+```{r}
+predict(lassoMod, type = "coefficients", s = lassoMod$lambda.1se)
+```
+
+Now we can use those significant variables as identified by Lasso to create and train a logistic regression model on the training dataset.
+```{r}
+lassoModglm <- glm(y ~ month+duration+previous+poutcome+emp.var.rate+nr.employed, 
+           data = train, family = "binomial")
+summary(lassoModglm)
+```
+
+To quantify the model fitness, we look at the $R^2$, AIC, and multicollinearity.
+```{r}
+r2glm(lassoModglm)
+AIC(lassoModglm)
+vif(lassoModglm)
+```
+
+As a comparison, we generate the logistic regression model on the full set of variables.
+```{r}
+mod <-glm(y ~ ., data = train, family = "binomial")
+r2glm(mod)
+AIC(mod)
+```
+As you can see, the $R^2$ and AIC are both higher in this model compared the previous model; this is most likely due to the inclusion of more predictor variables in the model.
+
+As an interesting comparison to the model with significant variables selected by the Lasso model, we use `stepAIC` to select the best model from the one with all variables, on the Training dataset.
+```{r}
+modAIC <- stepAIC(mod, trace = 0)
+summary(modAIC)
+```
+
+As you can see, the $R^2$ is closer to the Lasso model and the AIC is lower than all previous models. However, we can see some instances of high multicollinearity in this model, especially with pdays. 
+```{r}
+r2glm(modAIC)
+AIC(modAIC)
+vif(modAIC)
+```
+
+
+We now have three models trained on 80% of the dataset, so as another statistic on the fitness of the models we can predict the response variable for the remaining Test dataset, and calculate the accuracy of each model. Here accuracy is calculated by creating a Confusion Table with the Test predictions compared to actual values and then finding the ratio of correct to incorrect classifications.
+
+```{r warning=FALSE}
+modPred <- predict(mod, newdata = test.x, type = "response")
+modlassoPred <- predict(lassoModglm, newdata = test.x, type = "response")
+modAICPred <- predict(modAIC, newdata = test.x, type = "response")
+```
+
+
+```{r include = FALSE}
+yHat1 <- modPred > 0.5
+yHat2 <- modlassoPred > 0.5
+yHat3 <- modAICPred > 0.5
+
+table1 <- table(test.y,yHat1)
+table2 <- table(test.y,yHat2)
+table3 <- table(test.y,yHat3)
+
+accuracy1 <- sum(diag(table1)) / sum(table1)
+accuracy2 <- sum(diag(table2)) / sum(table2)
+accuracy3 <- sum(diag(table3)) / sum(table3)
+
+accuracy1
+accuracy2
+accuracy3
+
+```
+
+| Model | Description | R-Squared | AIC | Accuracy |
+|:--------|:------------------------------|:---------:|:-----:|:-----:|
+| mod | GLM Model with all Variables | 0.4563 | 1190.877 | 91.86% | 
+| lassoModglm | GLM Model with Variables Selected by Lasso | 0.4421 | 1147.386 | 92.13% |
+| modAIC | GLM Model Selected by stepAIC | 0.4483 | 1138.954 | 92.13% |
+
+: Top 3 Models for Fitness and Accuracy
+
+Another important point to make is that this dataset is skewed, with only 10.6% in the "No" category. The trivial model of setting all new data to the "No" classification would have 89.3% accuracy, so we need to make sure our model is more accurate than that. Fortunately our most successful model has 92.13% accuracy, so this is indeed a useful model.
+
+```{r include = FALSE}
+n.yes <- sum(train.y=="1")
+n.no <- sum(train.y=="0")
+n.yes / nrow(train)
+n.no / nrow(train)
+```
+
+##Conclusions
+Three final models have been selected using logistic regression and the Test data partition has been used to measure the accuracy of each model. We select the best model based on accuracy (calculated using the confusion table), best fit ($R^2$ and AIC), and low multicollinearity. Even though the model with all variables has the highest $R^2$, we attribute this to the inclusion of more predictors than the other models. We have found two very good models (lassoModglm, and modAIC) that perform better than the trivial model with an accuracy of 92.13%. The best model based on AIC and accuracy is the GLM model selected by `stepAIC`, however this model also has high multicollinearity.
+
+Therefore it has been useful to use the Lasso method to select the most relevant attributes for our model, as this is the best model overall. We can say with 92.13% certainty that this model will accurately predict the success of the bank telemarketing campaign, with Month, Duration, Previous, Previous Outcome, Employee Variability Rate, and Number Employed as the significant predictor variables.
+
+##References
+Hastie, Trevor and Qian, Junyang. Glmnet Vignette, Stanford. June 26, 2014,
+https://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html.
+
+Jeff. "Bank Telemarketing (Moro Et Al.)." *Kaggle*, 15 June 2017, www.kaggle.com/gobert/bank-telemarketing-moro-et-al.
+
+[Moro et al., 2014] S. Moro, P. Cortez and P. Rita. A Data-Driven Approach to Predict the Success of Bank Telemarketing. Decision Support Systems, Elsevier, 62:22-31, June 2014.
+
+Portugués, Eduardo García. *Notes for Predictive Modeling*. 21 Jan. 2018, bookdown.org/egarpor/PM-UC3M/.

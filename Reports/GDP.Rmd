@@ -1,0 +1,201 @@
+---
+title: "Bayesian Linear Regression Modeling to Predict GDP"
+author: "Katherine Botz, Juan Luis Gómez Chanclón"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+The goal of this project is to find a Bayesian Linear Regression Model to predict the GDP for various Countries in the world. Our dataset consists of 170 instances, with information about the Literacy, Infant Mortality per 1000 births, Agriculture as a percentage of the GDP, Population of the Country, and Net Migration. We select the best model in the end by maximizing both the DIC and calculated Accuracy of the GDP prediction in the Test data.
+
+```{r include = FALSE}
+library(rmarkdown)
+library(MASS)
+library(car)
+library(MCMCglmm)
+
+countries <- read.csv("Countries.csv")
+head(countries)
+attach(countries)
+
+#train and test
+n.countries <- nrow(countries)
+p.countries <- ncol(countries)
+
+sample_size <- floor(0.75 * nrow(countries))
+set.seed(3)
+train_ind <- sample(seq_len(nrow(countries)), size = sample_size)
+
+train <- countries[train_ind, ]
+test <- countries[-train_ind, ]
+```
+
+
+## Analysis
+First, we analyze the variables in the dataset to see if the relationship between the explanatory variables and the response variables appears to be linear. If not, we will perform a nonlinear transformation to exhibit a more linear relationship.
+
+We will plot the logarithm of the GDP against each of the explanatory variables.
+
+```{r echo=FALSE, fig.height = 4.5}
+scatterplotMatrix(~ log(GDPPC) + Literacy + InfantMortality + Agriculture + Population + 
+                    NetMigration, reg.line = lm, smooth = FALSE, spread = FALSE, span = 0.5, 
+                  ellipse = FALSE, levels = c(.5, .9), id.n = 0, diagonal = 'density', data = countries)
+```
+
+In the end, we find that taking the exponent of Literacy and the logarithm of Population shows a more linear relationship. We use these nonlinear transformations in building the models.
+
+```{r echo=FALSE, fig.height = 4.5}
+scatterplotMatrix(~ log(GDPPC) + exp(Literacy) + InfantMortality + Agriculture + log(Population) + NetMigration, reg.line = lm, smooth = FALSE,
+                  spread = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9),
+                  id.n = 0, diagonal = 'density', data = countries)
+```
+
+One of our measures of best fit for model selection will be accuracy of the model's predictions. To measure this, we split the dataset into Train and Test data, then train the model using the former and calculate the model accuracy using the latter.
+
+We will first generate a model using the traditional Frequentist approach and to compare to our Bayesian models. Variable selection for the Frequentist approach will be facilitated by the `stepAIC` model selection function.
+
+```{r echo=FALSE}
+modfreq <- lm(log(GDPPC) ~ exp(Literacy) + InfantMortality + Agriculture + log(Population) + NetMigration, 
+              data = train)
+
+modBIC <- stepAIC(modfreq, k = log(nrow(train)), trace = 0)
+summary(modBIC)
+```
+
+As can be seen in the Summary of the traditional model selected by `stepAIC`, the significant variables are Infant Mortality, Agriculture, Population, and Net Migration. We will compare this model to the Bayesian models later.
+
+We implement a Markov Chain Monte Carlo (MCMC) algorithm to obtain samples from the posterior distribution of the model parameters. First we generate a model will all variables, using the nonlinear transformations mentioned before.
+
+```{r include = FALSE}
+dics <- c()
+
+#model with all the variables
+bayes1 <- MCMCglmm(log(GDPPC) ~ exp(Literacy) + InfantMortality + Agriculture + log(Population) + NetMigration, data=train)
+dics <- c(dics, bayes1$DIC)
+```
+
+```{r echo=FALSE}
+summary(bayes1)
+```
+
+It is clear that Literacy is not significant in this model, so we remove it to train the next model:
+
+```{r include=FALSE}
+#get rid of Literacy, variables significant but higher DIC
+bayes2 <- MCMCglmm(log(GDPPC) ~ InfantMortality + Agriculture + log(Population) + NetMigration, data=train)
+dics <- c(dics, bayes2$DIC)
+```
+
+```{r echo=FALSE}
+summary(bayes2)
+```
+
+This seems to be a good model, with all significant variables. Let's try to replicate the selected Frequentist model for comparison:
+
+```{r include=FALSE}
+#Infant Mortality, Agriculture, Population, and Net Migration
+bayes3 <- MCMCglmm(log(GDPPC) ~ log(Population) + InfantMortality + Agriculture  
+                   + NetMigration, data=train)
+dics <- c(dics, bayes3$DIC)
+```
+
+```{r echo=FALSE}
+summary(bayes3)
+```
+
+Also seems to be a good model, with a similar DIC as the previous one. The following model is one more for comparison; it also has all significant variables, but with a slightly higher DIC.
+
+```{r include=FALSE}
+#Just Literacy, InfantMortality, Agriculture
+bayes4 <- MCMCglmm(log(GDPPC) ~ InfantMortality + Agriculture + NetMigration, data=train)
+dics <- c(dics, bayes4$DIC)
+```
+
+```{r echo=FALSE}
+summary(bayes4)
+```
+
+Now that we have four Bayesian MCMC models and one traditional Frequentist model, we calculate the Correlation and Mean Absolute Percentage Error between the predicted values and actual values of the Test dataset as a measure of Accuracy for each model. We calculate the Accuracy as `1-MAPE`, therefore we are trying to maximize this figure. As another measure of accuracy, we calculate the Root-Mean-Square Error with the intention of minimizing this figure. Finally, we show the Deviance Information Criterion (and BIC for the Frequentist model) as another measure of fitness for each model.
+
+```{r include = FALSE}
+accuracy <- c()
+mape <- c()
+rmse <- c()
+
+GDP_prediction1 <- exp(predict(bayes1, test))
+GDP_prediction2 <- exp(predict(bayes2, test))
+GDP_prediction3 <- exp(predict(bayes3, test))
+GDP_prediction4 <- exp(predict(bayes4, test))
+GDP_prediction5 <- exp(predict(modBIC, test))
+
+actuals_predictions1 <- data.frame(cbind(test$GDPPC, GDP_prediction1))
+actuals_predictions2 <- data.frame(cbind(test$GDPPC, GDP_prediction2))
+actuals_predictions3 <- data.frame(cbind(test$GDPPC, GDP_prediction3))
+actuals_predictions4 <- data.frame(cbind(test$GDPPC, GDP_prediction4))
+actuals_predictions5 <- data.frame(cbind(test$GDPPC, GDP_prediction5))
+
+accuracy <- c(accuracy, cor(actuals_predictions1))
+accuracy <- c(accuracy, cor(actuals_predictions2))
+accuracy <- c(accuracy, cor(actuals_predictions3))
+accuracy <- c(accuracy, cor(actuals_predictions4))
+accuracy <- c(accuracy, cor(actuals_predictions5))
+
+mape <- c(mape, (1-mean(abs((actuals_predictions1$X2 - actuals_predictions1$X1))/actuals_predictions1$X1)))
+mape <- c(mape, (1-mean(abs((actuals_predictions2$X2 - actuals_predictions2$X1))/actuals_predictions2$X1)))
+mape <- c(mape, (1-mean(abs((actuals_predictions3$X2 - actuals_predictions3$X1))/actuals_predictions3$X1)))
+mape <- c(mape, (1-mean(abs((actuals_predictions4$X2 - actuals_predictions4$X1))/actuals_predictions4$X1)))
+mape <- c(mape, (1-mean(abs((actuals_predictions5$GDP_prediction5 - actuals_predictions5$V1))/actuals_predictions5$V1)))
+
+# RMSE
+rmse1 = 0
+rmse2 = 0
+rmse3 = 0
+rmse4 = 0 
+rmse5 = 0
+for (i in seq(1:43)){
+  rmse1 = rmse1 + (actuals_predictions1$X1[i] - actuals_predictions1$X2[i])^2
+  rmse2 = rmse2 + (actuals_predictions2$X1[i] - actuals_predictions2$X2[i])^2
+  rmse3 = rmse3 + (actuals_predictions3$X1[i] - actuals_predictions3$X2[i])^2
+  rmse4 = rmse4 + (actuals_predictions4$X1[i] - actuals_predictions4$X2[i])^2
+  rmse5 = rmse5 + (actuals_predictions5$V1[i] - actuals_predictions5$GDP_prediction5[i])^2
+}
+
+rmse <- c(rmse, sqrt(rmse1/43))
+rmse <- c(rmse, sqrt(rmse2/43))
+rmse <- c(rmse, sqrt(rmse3/43))
+rmse <- c(rmse, sqrt(rmse4/43))
+rmse <- c(rmse, sqrt(rmse5/43))
+
+accuracy
+mape
+rmse
+```
+
+| Model | Description |DIC or BIC | Correlation | Accuracy | RMSE
+|:------|:------------------------------|:-------:|:-----:|:-----:|:-----:|
+| modBIC | Frequentist Model Selected by StepAIC | 297.57 | 86.32% | 43.54% | 12877
+| bayes1 | Bayes Model with all Variables | 279.81 | 87.01% | 47.05% | 12634
+| bayes2 | Bayes Model with all Variables except Literacy | 280.65 | 86.33% | 43.55% | 12872
+| bayes3 | Bayes Model with Same Variables as modBIC | 280.61 | 86.40% | 43.56% | 13384
+| bayes4 | Bayes Model with Literacy, Infant Mortality, and Agriculture | 286.70 | 90.93% | 43.10% | 13805
+
+: Top 5 Models for Fitness and Accuracy
+
+#Conclusions
+Comparing each measure of Accuracy and DIC, we select the first Bayes Model with all Variables as the best model. We check the Trace Plots for this model and confirm that the posterior distribution is in a stationary state.
+
+```{r echo=FALSE, fig.height = 4.5}
+plot(bayes1)
+```
+
+We also graph the actual GDP values to the predicted values as follows.
+
+```{r echo=FALSE, fig.height = 4, fig.align='center'}
+plot(log(GDPPC), predict(bayes1, countries), pch=16, xlab="Logarithm of GDP", ylab="Predicted Values of Log(GDP)")
+```
+
+In the end, the best model is still not very accurate (47%), but we attribute this issue to the small dataset, with 170 instances. Also, the Frequentist model does not perform better than the Bayesian models, so it is not an issue of the Posterior Distribution or the choice of prior.
+
