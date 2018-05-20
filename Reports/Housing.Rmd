@@ -1,7 +1,7 @@
 
 ---
 title: "Using Linear Regression to Predict House Prices in Washington"
-author: "Katherine Botz, Jessica Páez Bonilla, Manuel Jordán Expósito"
+author: "Katherine Botz, Jessica Paez Bonilla, Manuel Jordan Exposito"
 output: 
   pdf_document: 
     latex_engine: xelatex
@@ -262,15 +262,15 @@ qqPlot(modPCABIC, main="QQ Plot")
 *NOTE: Although there are 15 variables in each of the best models, an attempt to reduce the dimensions using Principal Component Analysis was not fruitful; the best model using Standardized Principal Components consisted of 16 elements. Therefore we will not include that analysis in this report.*
 
 #Conclusions
-Based on the previous table we come to the conclusion that the best model for predicting the house prices is the third one (modBIC3), as it has the highest Adjusted R-Squared (0.7687) and the highest accuracy rate (87.47%) in the prediction of the response variable.
+Based on the previous table we come to the conclusion that the best model for predicting the house prices is the third one (modBIC3), as it has the highest Adjusted R-Squared (0.7687) and the highest accuracy rate (80.5%) in the prediction of the response variable.
 
-In this model we have 15 variables that all significantly affect and offer predictive value to the house price. We use logarithmic transformations on the response variable and the variable sqft_living in the model. We also have normality in our data, therefore meeting the assumptions of the model and achieving the aim of our project to create a model to accurately predict Price. We can say with 87.47% certainty that this model will accurately predict the price of a house sold in King County, Washington, USA between May 2014 and May 2015 with the predictor variables in our model.
+In this model we have 15 variables that all significantly affect and offer predictive value to the house price. We use logarithmic transformations on the response variable and the variable sqft_living in the model. We also have normality in our data, therefore meeting the assumptions of the model and achieving the aim of our project to create a model to accurately predict Price. We can say with 80.5% certainty that this model will accurately predict the price of a house sold in King County, Washington, USA between May 2014 and May 2015 with the predictor variables in our model.
 
 #References
 
 Harlfoxem. "House Sales in King County, USA." *Kaggle*, 25 Aug. 2016, 
 www.kaggle.com/harlfoxem/housesalesprediction.
 
-Portugués, Eduardo García. *Notes for Predictive Modeling*. 29 Dec. 2017, bookdown.org/egarpor/PM-UC3M/.
+Portugues, Eduardo Garcia. *Notes for Predictive Modeling*. 29 Dec. 2017, bookdown.org/egarpor/PM-UC3M/.
 
 Prabhakaran, Selva. "Tutorials on Advanced Stats and Machine Learning With R." *r-Statistics.co*, 2016, r-statistics.co.
