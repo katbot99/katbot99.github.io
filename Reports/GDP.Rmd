@@ -1,6 +1,6 @@
 ---
 title: "Bayesian Linear Regression Modeling to Predict GDP"
-author: "Katherine Botz, Juan Luis Gómez Chanclón"
+author: "Katherine Botz, Juan Luis Gomez Chanclon"
 output: pdf_document
 ---
 
@@ -8,7 +8,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Introduction 
+## Introduction
 The goal of this project is to find a Bayesian Linear Regression Model to predict the GDP for various Countries in the world. Our dataset consists of 170 instances, with information about the Literacy, Infant Mortality per 1000 births, Agriculture as a percentage of the GDP, Population of the Country, and Net Migration. We select the best model in the end by maximizing both the DIC and calculated Accuracy of the GDP prediction in the Test data.
 
 ```{r include = FALSE}
