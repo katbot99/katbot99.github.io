@@ -1,6 +1,6 @@
 ---
 title: "Using Logistic Regression to Predict Bank Telemarketing Campaign Success"
-author: "Katherine Botz, Jessica P·ez Bonilla, Manuel Jord·n ExpÛsito"
+author: "Katherine Botz, Jessica P√°ez Bonilla, Manuel Jord√°n Exp√≥sito"
 output: 
   pdf_document: 
     latex_engine: xelatex
@@ -239,4 +239,4 @@ Jeff. "Bank Telemarketing (Moro Et Al.)." *Kaggle*, 15 June 2017, www.kaggle.com
 
 [Moro et al., 2014] S. Moro, P. Cortez and P. Rita. A Data-Driven Approach to Predict the Success of Bank Telemarketing. Decision Support Systems, Elsevier, 62:22-31, June 2014.
 
-PortuguÈs, Eduardo GarcÌa. *Notes for Predictive Modeling*. 21 Jan. 2018, bookdown.org/egarpor/PM-UC3M/.
+Portugu√©s, Eduardo Garc√≠a. *Notes for Predictive Modeling*. 21 Jan. 2018, bookdown.org/egarpor/PM-UC3M/.

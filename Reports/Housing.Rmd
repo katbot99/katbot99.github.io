@@ -1,7 +1,7 @@
 
 ---
 title: "Using Linear Regression to Predict House Prices in Washington"
-author: "Katherine Botz, Jessica P·ez Bonilla, Manuel Jord·n ExpÛsito"
+author: "Katherine Botz, Jessica P√°ez Bonilla, Manuel Jord√°n Exp√≥sito"
 output: 
   pdf_document: 
     latex_engine: xelatex
@@ -271,6 +271,6 @@ In this model we have 15 variables that all significantly affect and offer predi
 Harlfoxem. "House Sales in King County, USA." *Kaggle*, 25 Aug. 2016, 
 www.kaggle.com/harlfoxem/housesalesprediction.
 
-PortuguÈs, Eduardo GarcÌa. *Notes for Predictive Modeling*. 29 Dec. 2017, bookdown.org/egarpor/PM-UC3M/.
+Portugu√©s, Eduardo Garc√≠a. *Notes for Predictive Modeling*. 29 Dec. 2017, bookdown.org/egarpor/PM-UC3M/.
 
 Prabhakaran, Selva. "Tutorials on Advanced Stats and Machine Learning With R." *r-Statistics.co*, 2016, r-statistics.co.

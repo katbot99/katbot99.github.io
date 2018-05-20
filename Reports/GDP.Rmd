@@ -1,6 +1,6 @@
 ---
 title: "Bayesian Linear Regression Modeling to Predict GDP"
-author: "Katherine Botz, Juan Luis Gomez Chanclon"
+author: "Katherine Botz, Juan Luis Gómez Chanclón"
 output: pdf_document
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: 'Identify Luxury Hotel Groupings with Bayesian Clustering'
-author: "Katherine Botz, Juan Luis Gómez Chanclón"
+author: "Katherine Botz, Juan Luis GÃ³mez ChanclÃ³n"
 output:
   pdf_document:
     latex_engine: xelatex
