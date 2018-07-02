@@ -3,8 +3,12 @@
 Data Science Portfolio
 ----------
 ### Madrid City Location Intelligence
-#### UC3M MSc Thesis Project, in Progress
-Using Geolocalized Tweets and FourSquare data, developed a predictive model to improve on the Huff Model (or "Gravity Model") to predict consumer visiting behavior in Madrid, as well as identify and visualize catchment areas.
+#### UC3M MSc Thesis Project
+The typical Huff Gravity Model uses a combination of distance traveled and measures of attractiveness to predict the customer throughput to a particular retail location. In this project we extend the Huff Model by using geolocalized Twitter data to develop a model with actual observations of consumer retail choices. With 2,553,098 geotagged tweets from 24,471 unique users in Madrid, we use a combination of Linear Regression Modeling and Random Forests to find the best model to predict where a consumer decides to shop based on distance from their home, population, similar stores in their neighborhood, and other competing stores along the route. We use El Corte Inglés Department Stores in Madrid as a case study and fit a [model](https://katbot99.shinyapps.io/cortevis/) with R$^2$ of 0.883 and Mean Average Percentage Error of 45.00.
+
+### Visualization of Madrid Cadastral Data
+[Visualization](https://katbot99.shinyapps.io/catastral/)<br>
+Using 2011 Census and Cadastral Data, visualize and analyze trends in different socioeconomic and cadastral statistics in Madrid.
 
 ### Using Linear Regression to Predict House Prices in Washington
 [Report](https://github.com/katbot99/katbot99.github.io/blob/master/Reports/Housing.pdf)<br>
@@ -59,7 +63,7 @@ Skills
 * Advanced Proficiency with SQL (Microsoft SQL Server, PostgreSQL)
 * R, Python :: Numpy, Pandas, Pyomo, Matplotlib, Scipy, Scikit-Learn, Pyspark
 * Geospatial Querying with PostGIS
-* Graph Visualization with iGraph, Carto
+* Visualization with R-Shiny, ggplot, leaflet
 * Analytics with Microsoft Excel
 * Experience with JIRA, Rally, Git, Github, Anaconda, Jupyter
 * Introductory Experience with MongoDB, Hadoop, TensorFlow
