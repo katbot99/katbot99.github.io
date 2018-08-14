@@ -4,7 +4,7 @@ Data Science Portfolio
 ----------
 ### Madrid City Location Intelligence
 #### UC3M MSc Thesis Project
-The typical Huff Gravity Model uses a combination of distance traveled and measures of attractiveness to predict the customer throughput to a particular retail location. In this project we extend the Huff Model by using geolocalized Twitter data to develop a model with actual observations of consumer retail choices. With 2,553,098 geotagged tweets from 24,471 unique users in Madrid, we use a combination of Linear Regression Modeling and Random Forests to find the best model to predict where a consumer decides to shop based on distance from their home, population, similar stores in their neighborhood, and other competing stores along the route. We use El Corte Inglés Department Stores in Madrid as a case study and fit a [model](https://katbot99.shinyapps.io/cortevis/) with R$^2$ of 0.883 and Mean Average Percentage Error of 45.00.
+The typical Huff Gravity Model uses a combination of distance traveled and measures of attractiveness to predict the customer throughput to a particular retail location. In this project we extend the Huff Model by using geolocalized Twitter data to develop a model with actual observations of consumer retail choices. With 2,553,098 geotagged tweets from 24,471 unique users in Madrid, we use a combination of Linear Regression Modeling and Random Forests to find the best model to predict where a consumer decides to shop based on distance from their home, population, similar stores in their neighborhood, and other competing stores along the route. We use El Corte Inglés Department Stores in Madrid as a case study and fit a [model](https://katbot99.shinyapps.io/cortevis/) with R<sup>2</sup> of 0.883 and Mean Average Percentage Error of 45.00.
 
 ### Visualization of Madrid Cadastral Data
 [Visualization](https://katbot99.shinyapps.io/catastral/)<br>
@@ -29,16 +29,16 @@ Use Unsupervised Bayesian Clustering methods to identify any natural grouping of
 Education
 ----------
 
-2017-2018 (expected)
+2017-2018
 :   **MSc, Big Data Analytics**; Universidad Carlos III de Madrid
+:   *Cumulative Grade: 9.25/10*
 
     *Courses Included: Network Analysis and Data Visualization, Machine Learning, Time Series Analysis and Forecasting, Predictive Modeling, Statistical Learning, Bayesian Learning, Optimization for Large Scale Data, Back-End for Big Data Analytics, High Performance Computing for Big Data in Companies, Big Data Intelligence, Business Applications of Big Data Analytics, Web Data Analytics and Usage, Information Security and Technological Risk Management.*
 
 2007-2011
-:   **BSc, Mathematics**; University of California, Los Angeles
-
-    *Specialization in Computing*
-    <br>*GPA: 3.73, Cum Laude, Phi Beta Kappa*
+:   **BSc, Mathematics**; University of California, Los Angeles (UCLA)
+:   *Specialization in Computing*
+:   *GPA: 3.73, Cum Laude, Phi Beta Kappa*
 
 Experience
 ----------
@@ -48,7 +48,8 @@ January 2014 – August 2017
 :   *REAL Software Systems, London, United Kingdom*
 
 
-Manage the Transition program for each Alliant software configuration project from initial go-live phase to stable production use. The Alliant software platform provides enterprise solutions in Intellectual Property management, including contract management and royalties accounting processing. Establish stabilization timeline, troubleshoot post go-live configuration issues, formulate business requirements for software updates, and coordinate between the client and internal development resources. Transition each software implementation from unstable post go-live phase to production use, and prepare each client for interaction with Customer Support Department.
+Manage the Transition program for each Alliant software configuration project from initial go-live phase to stable production use. Provide technical consulting for database growth and performance tuning projects, Microsoft SQL reporting solutions, business process analysis, and expertise in royalties accounting processes. Troubleshoot SQL database and end-to-end configuration issues, formulate business requirements for software updates, and coordinate between the client and internal development resources. Provide dedicated and customized account management to establish stabilization timelines and prepare each client for interaction with Customer Support Department.
+
 
 July 2011 – January 2014
 :   **Customer Consultant**
@@ -60,11 +61,12 @@ Support customers in the live production use of the Alliant software; work direc
 
 Skills
 --------------------
-* Advanced Proficiency with SQL (Microsoft SQL Server, PostgreSQL)
-* R, Python :: Numpy, Pandas, Pyomo, Matplotlib, Scipy, Scikit-Learn, Pyspark
+* Advanced SQL Proficiency (Microsoft SQL Server, PostgreSQL)
+* Python :: Numpy, Pandas, Pyomo, Matplotlib, Scipy, Scikit-Learn, Pyspark
+* Analytics and Statistical Modeling with R
 * Geospatial Querying with PostGIS
 * Visualization with R-Shiny, ggplot, leaflet
-* Analytics with Microsoft Excel
 * Experience with JIRA, Rally, Git, Github, Anaconda, Jupyter
+* Analytics with Microsoft Excel
 * Introductory Experience with MongoDB, Hadoop, TensorFlow
 * Conversational Spanish (B1)
